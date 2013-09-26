@@ -3,6 +3,10 @@ package com.sin.android.sinlibs;
 /**
  * Nothing but a version
  * 
+ * @version 0.3
+ * @author RobinTang
+ *         2013-9-26
+ *         
  * @version 0.2
  * @author RobinTang
  *         2013-7-8
@@ -18,5 +22,5 @@ public class SinAndroidLibs {
 	/**
 	 * Web Server Version
 	 */
-	public static final String VERSION = "0.2";
+	public static final String VERSION = "0.3";
 }
