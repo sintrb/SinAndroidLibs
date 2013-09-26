@@ -5,6 +5,7 @@ import com.sin.android.sinlibs.base.Callable;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.os.Handler;
@@ -22,6 +23,10 @@ import android.widget.Toast;
 public class BaseActivity extends Activity {
 	private static final int WHAT_CALLABLE = 0;
 
+	
+	// 私有变量
+	protected ProgressDialog processDialog = null;
+	
 	private static Handler handler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -157,5 +162,35 @@ public class BaseActivity extends Activity {
 	public Dialog crateMessageDialog(int title, int message, int pstBtn, int ngtBtn, DialogInterface.OnClickListener pstLsn, DialogInterface.OnClickListener ngtLsn, DialogInterface.OnCancelListener oclLsn) {
 		Resources res = this.getResources();
 		return crateMessageDialog(res.getString(title), res.getString(message), res.getString(pstBtn), res.getString(ngtBtn), pstLsn, ngtLsn, oclLsn);
+	}
+	
+
+	public void asynCallAndShowProcessDlg(int messageid, Callable callable, Object... args) {
+		asynCallAndShowProcessDlg(getResources().getString(messageid), callable, args);
+	}
+
+	public void asynCallAndShowProcessDlg(String message, Callable callable, Object... args) {
+		final Callable clb = callable;
+		final Object[] fargs = args;
+		if (processDialog == null) {
+			processDialog = new ProgressDialog(this);
+		}
+		processDialog.setMessage(message);
+		processDialog.setCancelable(false);
+		processDialog.setCanceledOnTouchOutside(false);
+		processDialog.show();
+		asynCall(new Callable() {
+
+			@Override
+			public void call(Object... args) {
+				clb.call(fargs);
+				safeCall(new Callable() {
+					@Override
+					public void call(Object... args) {
+						processDialog.dismiss();
+					}
+				});
+			}
+		});
 	}
 }
