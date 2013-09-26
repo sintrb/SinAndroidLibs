@@ -174,10 +174,10 @@ public class BaseActivity extends Activity {
 		final Object[] fargs = args;
 		if (processDialog == null) {
 			processDialog = new ProgressDialog(this);
+			processDialog.setCancelable(false);
+			processDialog.setCanceledOnTouchOutside(false);
 		}
 		processDialog.setMessage(message);
-		processDialog.setCancelable(false);
-		processDialog.setCanceledOnTouchOutside(false);
 		processDialog.show();
 		asynCall(new Callable() {
 
