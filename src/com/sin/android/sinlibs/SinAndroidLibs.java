@@ -3,6 +3,11 @@ package com.sin.android.sinlibs;
 /**
  * Nothing but a version
  * 
+ * @version 0.4
+ * @author RobinTang
+ *         2013-10-07
+ *         Add SimpleListAdapter
+ * 
  * @version 0.3
  * @author RobinTang
  *         2013-9-26
@@ -22,5 +27,5 @@ public class SinAndroidLibs {
 	/**
 	 * Web Server Version
 	 */
-	public static final String VERSION = "0.3";
+	public static final String VERSION = "0.4";
 }
