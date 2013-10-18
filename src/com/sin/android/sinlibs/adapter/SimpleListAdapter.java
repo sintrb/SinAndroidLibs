@@ -7,11 +7,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
+/**
+ * 简单列表视图适配器
+ * 
+ * @author RobinTang
+ * 
+ *         2013-10-19
+ */
 public class SimpleListAdapter extends BaseAdapter {
 	private Context context;
 	private List<?> list;
 	private SimpleViewInitor initor;
 
+	/**
+	 * 创建一个适配器实例
+	 * 
+	 * @param context
+	 *            上下文
+	 * @param list
+	 *            数据列表
+	 * @param initor
+	 *            视图初始化器
+	 */
 	public SimpleListAdapter(Context context, List<?> list, SimpleViewInitor initor) {
 		super();
 		this.context = context;
