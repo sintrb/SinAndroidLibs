@@ -30,7 +30,7 @@ package com.sin.android.sinlibs;
  */
 public class SinAndroidLibs {
 	/**
-	 * Web Server Version
+	 * SinAndroidLibs Version
 	 */
 	public static final String VERSION = "0.5";
 }
