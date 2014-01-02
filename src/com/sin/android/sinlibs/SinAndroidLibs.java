@@ -3,6 +3,11 @@ package com.sin.android.sinlibs;
 /**
  * Nothing but a version
  * 
+ * @version 0.5
+ * @author RobinTang
+ *         2014-01-02
+ *         Add Dialogs(com.sin.android.sinlibs.ui)
+ * 
  * @version 0.4
  * @author RobinTang
  *         2013-10-07
@@ -27,5 +32,5 @@ public class SinAndroidLibs {
 	/**
 	 * Web Server Version
 	 */
-	public static final String VERSION = "0.4";
+	public static final String VERSION = "0.5";
 }
