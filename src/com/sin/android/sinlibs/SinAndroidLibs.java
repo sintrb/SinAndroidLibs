@@ -3,6 +3,12 @@ package com.sin.android.sinlibs;
 /**
  * Nothing but a version
  * 
+ * @version 0.6
+ * @author RobinTang
+ *         2014-01-17
+ *         周期任务(com.sin.android.sinlibs.utils.IntervalRunner)
+ * 
+ * 
  * @version 0.5
  * @author RobinTang
  *         2014-01-02
@@ -32,5 +38,5 @@ public class SinAndroidLibs {
 	/**
 	 * SinAndroidLibs Version
 	 */
-	public static final String VERSION = "0.5";
+	public static final String VERSION = "0.6";
 }
