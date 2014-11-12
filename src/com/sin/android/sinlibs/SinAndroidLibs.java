@@ -3,6 +3,11 @@ package com.sin.android.sinlibs;
 /**
  * Nothing but a version
  * 
+ * @version 0.7
+ * @author RobinTang
+ *         2014-11-12
+ *         根据视图控件创建对话框
+ * 
  * @version 0.6
  * @author RobinTang
  *         2014-01-17
@@ -38,5 +43,5 @@ public class SinAndroidLibs {
 	/**
 	 * SinAndroidLibs Version
 	 */
-	public static final String VERSION = "0.6";
+	public static final String VERSION = "0.7";
 }
