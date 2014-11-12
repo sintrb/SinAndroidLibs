@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.os.Handler;
 import android.os.Message;
+import android.view.View;
 import android.widget.Toast;
 
 /**
@@ -23,10 +24,9 @@ import android.widget.Toast;
 public class BaseActivity extends Activity {
 	private static final int WHAT_CALLABLE = 0;
 
-	
 	// 私有变量
 	protected ProgressDialog processDialog = null;
-	
+
 	private static Handler handler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -106,11 +106,11 @@ public class BaseActivity extends Activity {
 	public void safeToast(int textid, int duration) {
 		this.safeToast(getResources().getString(textid), duration);
 	}
-	
+
 	public void safeToast(int textid) {
 		this.safeToast(getResources().getString(textid));
 	}
-	
+
 	/**
 	 * 创建消息对话框
 	 * 
@@ -141,6 +141,35 @@ public class BaseActivity extends Activity {
 	}
 
 	/**
+	 * 使用视图空间创建对话框
+	 * 
+	 * @param title
+	 *            对话框标题
+	 * @param view
+	 *            对话框正文控件
+	 * @param pstBtn
+	 *            PositiveButton文字
+	 * @param ngtBtn
+	 *            NegativeButton文字
+	 * @param pstLsn
+	 *            PositiveButton的监听器
+	 * @param ngtLsn
+	 *            NegativeButton的监听
+	 * @param oclLsn
+	 *            OnCancelListener
+	 * @return 对话框
+	 */
+	public Dialog crateMessageDialog(String title, View view, String pstBtn, String ngtBtn, DialogInterface.OnClickListener pstLsn, DialogInterface.OnClickListener ngtLsn, DialogInterface.OnCancelListener oclLsn) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle(title);
+		builder.setView(view);
+		builder.setPositiveButton(pstBtn, pstLsn);
+		builder.setNegativeButton(ngtBtn, ngtLsn);
+		builder.setOnCancelListener(oclLsn);
+		return builder.create();
+	}
+
+	/**
 	 * 创建消息对话框
 	 * 
 	 * @param title
@@ -163,7 +192,6 @@ public class BaseActivity extends Activity {
 		Resources res = this.getResources();
 		return crateMessageDialog(res.getString(title), res.getString(message), res.getString(pstBtn), res.getString(ngtBtn), pstLsn, ngtLsn, oclLsn);
 	}
-	
 
 	public void asynCallAndShowProcessDlg(int messageid, Callable callable, Object... args) {
 		asynCallAndShowProcessDlg(getResources().getString(messageid), callable, args);
