@@ -103,6 +103,22 @@ public class BaseActivity extends Activity {
 		}, text, Toast.LENGTH_SHORT);
 	}
 
+	public void showToast(int textid) {
+		showToast(textid, Toast.LENGTH_SHORT);
+	}
+
+	public void showToast(String text) {
+		showToast(text, Toast.LENGTH_SHORT);
+	}
+
+	public void showToast(int textid, int duration) {
+		Toast.makeText(BaseActivity.this, textid, duration).show();
+	}
+
+	public void showToast(String text, int duration) {
+		Toast.makeText(BaseActivity.this, text, duration).show();
+	}
+
 	public void safeToast(int textid, int duration) {
 		this.safeToast(getResources().getString(textid), duration);
 	}
@@ -130,7 +146,7 @@ public class BaseActivity extends Activity {
 	 *            OnCancelListener
 	 * @return 对话框
 	 */
-	public Dialog crateMessageDialog(String title, String message, String pstBtn, String ngtBtn, DialogInterface.OnClickListener pstLsn, DialogInterface.OnClickListener ngtLsn, DialogInterface.OnCancelListener oclLsn) {
+	public Dialog createMessageDialog(String title, String message, String pstBtn, String ngtBtn, DialogInterface.OnClickListener pstLsn, DialogInterface.OnClickListener ngtLsn, DialogInterface.OnCancelListener oclLsn) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(title);
 		builder.setMessage(message);
@@ -159,7 +175,7 @@ public class BaseActivity extends Activity {
 	 *            OnCancelListener
 	 * @return 对话框
 	 */
-	public Dialog crateMessageDialog(String title, View view, String pstBtn, String ngtBtn, DialogInterface.OnClickListener pstLsn, DialogInterface.OnClickListener ngtLsn, DialogInterface.OnCancelListener oclLsn) {
+	public Dialog createMessageDialog(String title, View view, String pstBtn, String ngtBtn, DialogInterface.OnClickListener pstLsn, DialogInterface.OnClickListener ngtLsn, DialogInterface.OnCancelListener oclLsn) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(title);
 		builder.setView(view);
@@ -188,9 +204,9 @@ public class BaseActivity extends Activity {
 	 *            OnCancelListener
 	 * @return 对话框
 	 */
-	public Dialog crateMessageDialog(int title, int message, int pstBtn, int ngtBtn, DialogInterface.OnClickListener pstLsn, DialogInterface.OnClickListener ngtLsn, DialogInterface.OnCancelListener oclLsn) {
+	public Dialog createMessageDialog(int title, int message, int pstBtn, int ngtBtn, DialogInterface.OnClickListener pstLsn, DialogInterface.OnClickListener ngtLsn, DialogInterface.OnCancelListener oclLsn) {
 		Resources res = this.getResources();
-		return crateMessageDialog(res.getString(title), res.getString(message), res.getString(pstBtn), res.getString(ngtBtn), pstLsn, ngtLsn, oclLsn);
+		return createMessageDialog(res.getString(title), res.getString(message), res.getString(pstBtn), res.getString(ngtBtn), pstLsn, ngtLsn, oclLsn);
 	}
 
 	public void asynCallAndShowProcessDlg(int messageid, Callable callable, Object... args) {
@@ -215,7 +231,13 @@ public class BaseActivity extends Activity {
 				safeCall(new Callable() {
 					@Override
 					public void call(Object... args) {
-						processDialog.dismiss();
+						if (processDialog.isShowing() && !BaseActivity.this.isFinishing()) {
+							try {
+								processDialog.dismiss();
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
 					}
 				});
 			}
