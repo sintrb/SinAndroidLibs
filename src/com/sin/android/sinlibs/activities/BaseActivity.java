@@ -214,12 +214,61 @@ public class BaseActivity extends Activity {
 	}
 
 	public void asynCallAndShowProcessDlg(String message, Callable callable, Object... args) {
+		asynCallAndShowProcessDlg(-1, 0, message, callable, args);
+	}
+
+	public void safeSetProcessDlg(int messageid, int procs) {
+		safeCall(new Callable() {
+
+			@Override
+			public void call(Object... args) {
+				setProcessDlg((Integer) args[0], (Integer) args[1]);
+			}
+		}, messageid, procs);
+	}
+
+	public void safeSetProcessDlg(String message, int procs) {
+		safeCall(new Callable() {
+
+			@Override
+			public void call(Object... args) {
+				setProcessDlg((String) args[0], (Integer) args[1]);
+			}
+		}, message, procs);
+	}
+
+	public void setProcessDlg(int messageid, int procs) {
+		setProcessDlg(messageid != 0 ? getResources().getString(messageid) : null, procs);
+	}
+
+	public void setProcessDlg(String message, int procs) {
+		if (processDialog != null) {
+			if (message != null)
+				processDialog.setMessage(message);
+			if (procs >= 0)
+				processDialog.setProgress(procs);
+		}
+	}
+
+	public void asynCallAndShowProcessDlg(int procs, int max, int messageid, Callable callable, Object... args) {
+		asynCallAndShowProcessDlg(procs, max, getResources().getString(messageid), callable, args);
+	}
+
+	public void asynCallAndShowProcessDlg(int procs, int max, String message, Callable callable, Object... args) {
 		final Callable clb = callable;
 		final Object[] fargs = args;
-		if (processDialog == null) {
-			processDialog = new ProgressDialog(this);
-			processDialog.setCancelable(false);
-			processDialog.setCanceledOnTouchOutside(false);
+		// if (processDialog == null) {
+		processDialog = new ProgressDialog(this);
+		processDialog.setCancelable(false);
+		processDialog.setCanceledOnTouchOutside(false);
+		processDialog.setIndeterminate(false);
+		// }
+		if (procs >= 0 && max > 0) {
+			processDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+			processDialog.setProgress(procs);
+			processDialog.setMax(max);
+		} else {
+			processDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 		}
 		processDialog.setMessage(message);
 		processDialog.show();
