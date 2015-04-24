@@ -245,8 +245,10 @@ public class BaseActivity extends Activity {
 		if (processDialog != null) {
 			if (message != null)
 				processDialog.setMessage(message);
-			if (procs >= 0)
+			if (procs >= 0) {
 				processDialog.setProgress(procs);
+				processDialog.setTitle("EE" + procs);
+			}
 		}
 	}
 

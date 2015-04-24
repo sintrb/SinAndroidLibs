@@ -3,6 +3,11 @@ package com.sin.android.sinlibs;
 /**
  * Nothing but a version
  * 
+ * @version 0.8
+ * @author RobinTang
+ *         2014-11-12
+ *         方法细分
+ * 
  * @version 0.7
  * @author RobinTang
  *         2014-11-12
@@ -43,5 +48,5 @@ public class SinAndroidLibs {
 	/**
 	 * SinAndroidLibs Version
 	 */
-	public static final String VERSION = "0.7";
+	public static final String VERSION = "0.8";
 }
