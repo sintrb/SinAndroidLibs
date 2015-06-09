@@ -57,6 +57,25 @@ public class BaseActivity extends Activity {
 	}
 
 	/**
+	 * 主线程延迟调用
+	 * 
+	 * @param delayms
+	 *            延迟时间(毫秒)
+	 * @param callable
+	 *            可调用对象
+	 * @param args
+	 *            参数
+	 */
+	public void safeDelayCall(int delayms, Callable callable, Object... args) {
+		if (args.length > 0)
+			callable.args = args;
+		Message message = new Message();
+		message.obj = callable;
+		message.what = WHAT_CALLABLE;
+		handler.sendMessageDelayed(message, delayms);
+	}
+
+	/**
 	 * 异步调用
 	 * 
 	 * @param callable
