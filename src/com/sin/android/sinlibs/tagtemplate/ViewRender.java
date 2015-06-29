@@ -48,7 +48,7 @@ public class ViewRender {
 					try {
 						renderView(view, model, tmpl);
 					} catch (Exception e) {
-						Log.e("TT", "Model:" + model + " Tmpl:" + tmpl);
+						Log.e("TT", "Error, Model:" + model + " Tmpl:" + tmpl);
 						e.printStackTrace();
 					}
 				}
