@@ -2,8 +2,10 @@ package com.sin.android.sinlibs.tagtemplate;
 
 import java.lang.reflect.InvocationTargetException;
 
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 public class ViewRender {
@@ -30,7 +32,7 @@ public class ViewRender {
 		this.templateTagStart = templateTagStart;
 	}
 
-	public void renderView(View view, Object model) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+	public void renderView(View view, Object model) {
 		if (view instanceof ViewGroup) {
 			ViewGroup vg = (ViewGroup) view;
 			int count = vg.getChildCount();
@@ -42,7 +44,13 @@ public class ViewRender {
 			if (tag instanceof String) {
 				String stag = (String) tag;
 				if (stag.startsWith(templateTagStart)) {
-					renderView(view, model, stag.substring(templateTagStart.length()));
+					String tmpl = stag.substring(templateTagStart.length());
+					try {
+						renderView(view, model, tmpl);
+					} catch (Exception e) {
+						Log.e("TT", "Model:" + model + " Tmpl:" + tmpl);
+						e.printStackTrace();
+					}
 				}
 			}
 		}
@@ -51,10 +59,16 @@ public class ViewRender {
 	public void renderView(View view, Object model, String tmpl) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
 		if (view instanceof TextView) {
 			renderTextView((TextView) view, model, tmpl);
+		} else if (view instanceof EditText) {
+			renderEditText((EditText) view, model, tmpl);
 		}
 	}
 
 	public void renderTextView(TextView tv, Object model, String tmpl) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
 		tv.setText(templateEngine.evalString(model, tmpl));
+	}
+
+	public void renderEditText(EditText et, Object model, String tmpl) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+		et.setText(templateEngine.evalString(model, tmpl));
 	}
 }
