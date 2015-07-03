@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class ViewRender {
@@ -70,5 +71,9 @@ public class ViewRender {
 
 	public void renderEditText(EditText et, Object model, String tmpl) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
 		et.setText(templateEngine.evalString(model, tmpl));
+	}
+	
+	public void renderImageView(ImageView iv, Object model, String tmpl) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+//		et.setText(templateEngine.evalString(model, tmpl));
 	}
 }
