@@ -2,9 +2,11 @@ package com.sin.android.sinlibs.tagtemplate;
 
 import java.lang.reflect.InvocationTargetException;
 
+import android.net.Uri;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -62,6 +64,10 @@ public class ViewRender {
 			renderTextView((TextView) view, model, tmpl);
 		} else if (view instanceof EditText) {
 			renderEditText((EditText) view, model, tmpl);
+		} else if (view instanceof ImageView) {
+			renderImageView((ImageView) view, model, tmpl);
+		} else if (view instanceof Button) {
+			renderButton((Button) view, model, tmpl);
 		}
 	}
 
@@ -72,8 +78,12 @@ public class ViewRender {
 	public void renderEditText(EditText et, Object model, String tmpl) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
 		et.setText(templateEngine.evalString(model, tmpl));
 	}
-	
+
 	public void renderImageView(ImageView iv, Object model, String tmpl) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
-//		et.setText(templateEngine.evalString(model, tmpl));
+		iv.setImageURI(Uri.parse(templateEngine.evalString(model, tmpl)));
+	}
+
+	public void renderButton(Button btn, Object model, String tmpl) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+		btn.setText(templateEngine.evalString(model, tmpl));
 	}
 }
