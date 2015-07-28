@@ -32,7 +32,8 @@ public class TemplateEngine {
 		Matcher m = tmplPattern.matcher(tmpl);
 		StringBuffer sb = new StringBuffer();
 		while (m.find()) {
-			m.appendReplacement(sb, "" + expressionEngine.eval(model, m.group(1).trim()));
+			Object v = expressionEngine.eval(model, m.group(1).trim());
+			m.appendReplacement(sb, v == null ? "" : "" + v);
 		}
 
 		return sb.toString();
