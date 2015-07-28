@@ -42,6 +42,20 @@ public class InjectUtils {
 		}
 	}
 
+	public class ViewViewGetter implements ViewGetter {
+		private View view;
+
+		public ViewViewGetter(View view) {
+			super();
+			this.view = view;
+		}
+
+		@Override
+		public View findViewById(int id) {
+			return view.findViewById(id);
+		}
+	}
+
 	public static int intValOfClz(Class<?> resclz, String name) throws NoSuchFieldException, IllegalAccessException, IllegalArgumentException {
 		// Field f = resclz.getDeclaredField(name);
 		Field f = resclz.getField(name);
@@ -50,6 +64,10 @@ public class InjectUtils {
 
 	public static int injectViews(Activity activity, Class<?> resclz) {
 		return injectViews(activity, resclz, getUtils().new ActivityViewGetter(activity));
+	}
+	
+	public static int injectViews(Object o, Class<?> resclz, View rootView) {
+		return injectViews(o, resclz, getUtils().new ViewViewGetter(rootView));
 	}
 
 	public static int injectViews(Object o, Class<?> resclz, ViewGetter viewGetter) {
