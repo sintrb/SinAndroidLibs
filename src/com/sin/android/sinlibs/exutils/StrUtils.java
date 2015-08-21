@@ -39,4 +39,16 @@ public class StrUtils {
 	public static boolean isNullOrEmpty(String s) {
 		return s == null || s.length() == 0;
 	}
+
+	public static String urlNoCached(String url) {
+		StringBuffer sb = new StringBuffer(url);
+		if (sb.indexOf("?") < 0)
+			sb.append("?");
+		char last = sb.charAt(sb.length() - 1);
+		if (last != '&' && last != '?')
+			sb.append('&');
+		sb.append("_t_=");
+		sb.append(System.currentTimeMillis());
+		return sb.toString();
+	}
 }
