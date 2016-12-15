@@ -36,25 +36,25 @@ public class ViewRender {
 	}
 
 	public void renderView(View view, Object model) {
+		Object tag = view.getTag();
+		if (tag instanceof String) {
+			String stag = (String) tag;
+			if (stag.startsWith(templateTagStart)) {
+				String tmpl = stag.substring(templateTagStart.length());
+				try {
+					renderView(view, model, tmpl);
+				} catch (Exception e) {
+					Log.e("TT", "Error, Model:" + model + " Tmpl:" + tmpl);
+					e.printStackTrace();
+				}
+			}
+		}
+		
 		if (view instanceof ViewGroup) {
 			ViewGroup vg = (ViewGroup) view;
 			int count = vg.getChildCount();
 			for (int i = 0; i < count; ++i) {
 				renderView(vg.getChildAt(i), model);
-			}
-		} else {
-			Object tag = view.getTag();
-			if (tag instanceof String) {
-				String stag = (String) tag;
-				if (stag.startsWith(templateTagStart)) {
-					String tmpl = stag.substring(templateTagStart.length());
-					try {
-						renderView(view, model, tmpl);
-					} catch (Exception e) {
-						Log.e("TT", "Error, Model:" + model + " Tmpl:" + tmpl);
-						e.printStackTrace();
-					}
-				}
 			}
 		}
 	}

@@ -35,4 +35,8 @@ public class PreferencesWarp {
 			e.printStackTrace();
 		}
 	}
+
+	public void clear() {
+		preferences.edit().clear().commit();
+	}
 }
