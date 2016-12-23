@@ -55,4 +55,8 @@ public class SimpleListAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		return initor.initView(context, position, convertView, parent, getItem(position));
 	}
+	
+	public void setList(List<?> list){
+		this.list = list;
+	}
 }
