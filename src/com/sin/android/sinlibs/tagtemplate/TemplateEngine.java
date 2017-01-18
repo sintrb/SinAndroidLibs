@@ -8,7 +8,7 @@ public class TemplateEngine {
     static private final String TMPLESTART = "{";
     static private final String TMPLEEND = "}";
     static private final String TMPLEPATTERN = "\\{([^}]*)\\}";
-    private ExpressionEngine expressionEngine = new ExpressionEngine();
+    protected ExpressionEngine expressionEngine = new ExpressionEngine();
     private Pattern tmplPattern = null;
 
     public TemplateEngine() {
@@ -24,6 +24,7 @@ public class TemplateEngine {
     public TemplateEngine(ExpressionEngine expressionEngine) {
         super();
         this.expressionEngine = expressionEngine;
+        initEngine();
     }
 
     private void initEngine() {

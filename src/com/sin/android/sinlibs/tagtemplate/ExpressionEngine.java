@@ -13,23 +13,20 @@ public class ExpressionEngine {
             nexp = s;
             if (nexp.length() > 0 && model != null) {
                 if (nexp.startsWith("a:")) {
+                    // 获取属性
                     res = model = evalAttribute(model, nexp.substring(2));
                 } else if (nexp.startsWith("m:")) {
+                    // 执行方法
                     res = model = evalMethod(model, nexp.substring(2));
+                } else if (nexp.startsWith("f:")) {
+                    // 过滤器
+                    res = model = evalFilter(model, nexp.substring(2));
                 } else {
                     res = model = evalAttribute(model, nexp);
                 }
             }
         }
         return res;
-//		if (exp.startsWith(".a:")) {
-//			return evalAttribute(model, exp.substring(3));
-//		} else if (exp.startsWith(".m:")) {
-//			return evalMethod(model, exp.substring(3));
-//		} else if (exp.startsWith(".")) {
-//			return evalAttribute(model, exp.substring(1));
-//		}
-//		throw new IllegalArgumentException("unknown expression: " + exp);
     }
 
     public Object evalAttribute(Object model, String att) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
@@ -42,5 +39,9 @@ public class ExpressionEngine {
         Class<?> clz = model.getClass();
         Method method = clz.getMethod(met);
         return method.invoke(model);
+    }
+
+    public Object evalFilter(Object model, String filter) throws IllegalArgumentException {
+        throw new IllegalArgumentException("unknow how to handle filter(" + filter + ") with data " + model);
     }
 }
