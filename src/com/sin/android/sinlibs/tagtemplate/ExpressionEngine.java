@@ -11,17 +11,17 @@ public class ExpressionEngine {
         String[] atbs = exp.split("\\.");
         for (String s : atbs) {
             nexp = s;
-            if (nexp.length() > 0 && model != null) {
+            if (nexp.length() > 0) {
                 if (nexp.startsWith("a:")) {
                     // 获取属性
                     res = model = evalAttribute(model, nexp.substring(2));
-                } else if (nexp.startsWith("m:")) {
+                } else if (nexp.startsWith("m:") && model != null) {
                     // 执行方法
                     res = model = evalMethod(model, nexp.substring(2));
                 } else if (nexp.startsWith("f:")) {
                     // 过滤器
                     res = model = evalFilter(model, nexp.substring(2));
-                } else {
+                } else if (model != null) {
                     res = model = evalAttribute(model, nexp);
                 }
             }
