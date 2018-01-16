@@ -1,5 +1,8 @@
 package com.sin.android.sinlibs.utils;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 
 import java.io.BufferedInputStream;
@@ -71,5 +74,19 @@ public class FileUtils {
             }
         }
         return true;
+    }
+
+
+    //下载到本地后执行安装
+    public static void installAPK(String filePath, Context context) {
+        File file = new File(filePath);
+        if (!file.exists()) return;
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        Uri uri = Uri.parse("file://" + file.toString());
+        intent.setDataAndType(uri, "application/vnd.android.package-archive");
+
+        //在服务中开启activity必须设置flag,后面解释
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
     }
 }
