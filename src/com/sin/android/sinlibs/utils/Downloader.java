@@ -1,13 +1,16 @@
 package com.sin.android.sinlibs.utils;
 
+import android.Manifest;
 import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 
 import java.io.File;
@@ -74,7 +77,13 @@ public class Downloader {
         if (delTaskIds.size() > 0) {
             for (Long taskId : delTaskIds) {
                 Log.i(TAG, "remove task " + taskId);
-                this.taskMap.remove(taskId);
+                TaskHolder th = this.taskMap.get(taskId);
+                if (th != null) {
+                    if (th.listener != null) {
+                        th.listener.onFailed(taskId, th.filePath, th);
+                    }
+                    this.taskMap.remove(taskId);
+                }
             }
         }
     }
@@ -107,6 +116,8 @@ public class Downloader {
                     holder.listener.onFailed(taskId, holder.filePath, holder);
                     break;
             }
+        } else {
+            remove = true;
         }
         return remove;
     }
@@ -120,16 +131,20 @@ public class Downloader {
                 }
             }
         }
+//        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            return 0;
+//        }
         TaskHolder holder = new TaskHolder();
         holder.url = url;
         holder.listener = listener;
         holder.filePath = Environment.getExternalStoragePublicDirectory(this.dirType).getAbsolutePath() + File.separator + name;
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
-        Log.i(TAG, "add download " + url + " -> " + name);
+        Log.i(TAG, "add download " + url + " -> " + holder.filePath);
         request.setDestinationInExternalPublicDir(this.dirType, name);
         request.setTitle(title);
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE);
         request.setMimeType(mimeType);
+        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
         request.setAllowedOverRoaming(true);
         request.setVisibleInDownloadsUi(true);
         holder.taskId = downloadManager.enqueue(request);

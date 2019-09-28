@@ -3,16 +3,15 @@ package com.sin.android.sinlibs.utils;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.util.Log;
+import android.os.Build;
+import android.support.v4.content.FileProvider;
+
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -82,10 +81,19 @@ public class FileUtils {
         File file = new File(filePath);
         if (!file.exists()) return;
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        Uri uri = Uri.parse("file://" + file.toString());
-        intent.setDataAndType(uri, "application/vnd.android.package-archive");
 
-        //在服务中开启activity必须设置flag,后面解释
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            Uri contentUri = FileProvider.getUriForFile(context, "com.sin.android.sinlibs.fileprovider", file);
+            intent.setDataAndType(contentUri, "application/vnd.android.package-archive");
+        } else {
+//            intent.setDataAndType(Uri.fromFile(new File(filePath)), "application/vnd.android.package-archive");
+            Uri uri = Uri.parse("file://" + file.toString());
+            intent.setDataAndType(uri, "application/vnd.android.package-archive");
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        }
+        context.startActivity(intent);
+
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
